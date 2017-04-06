@@ -25,18 +25,18 @@ public class Main extends Application {
 			
 			Database chatDB = new Database("jdbc:mysql://31.220.20.83:3306/u433658471_hcipj?useUnicode=true&characterEncoding=UTF-8", "u433658471_hugo", "Hm211195");
 			
-			User testUser = chatDB.createUser("Sender", "ITextYou");
-			User testUser2 = chatDB.createUser("Receiver", "textMe");
+			User testUser = chatDB.createUser("SecondSender", "pass");
+			User testUser2 = chatDB.createUser("SecondReceiver", "000000");
 			Room testRoom = chatDB.createRoom("testRoom");
 			
 			chatDB.connectUser(testUser, testRoom);
 			chatDB.connectUser(testUser2, testRoom);
-			chatDB.sendMessage(testUser, testUser2, testRoom, "I see you!", "04052017000823");
+			chatDB.sendMessage(testUser, testUser2, testRoom, "I can text you.", "04062017120823");
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+	
 	}
 	
 	public static void main(String[] args) {
