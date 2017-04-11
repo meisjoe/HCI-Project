@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HCI Text Chat</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Raleway:400,200,500,600,700,800,300" rel="stylesheet" />
+<link href="default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+<!--[if IE 6]>
+<link href="default_ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+</head>
+<body>
+<div id="wrapper" align="center">
+	<div id="menu-wrapper">
+		<div id="menu">
+			<ul>
+				<li><a href="index.html">Homepage</a></li>
+				<li ><a href="chat.html">Chat</a></li>
+				<li class="current_page_item"><a href="login.html">Login</a></li>
+			</ul>
+		</div>
+		<!-- end #menu --> 
+	<div id="header-wrapper">
+		<div id="header" align="center">
+			<div id="logo">
+				<h1><a href="#">HCI Text Chat</a></h1>
+				<p>Hopefully its good</p>
+			</div>
+		</div>
+	</div>
+    <table width="100%" border="0">
+  <tr>
+    <td width="10%" height="200"></td>
+    <td align="center" width="60%"> 
+        <form id="regForm" method="post" action="">
+        	<div>
+                <label for="Username: ">Username:</label>
+                <input name="userName" type="text" dir="ltr" placeholder="enter username"/>
+            </div>
+            <div>
+                <label for="Password: ">Password:&nbsp;</label>
+                <input name="userPassword" type="password" placeholder="enter password"/>
+            </div>
+            <div>
+           		<input name="register" type="button" value="Register" vspace="20" onClick="location.href='login.html?register=true'>sumbit registration"
+                <?php
+                        echo '<input type="hidden" value="' . htmlspecialchars(this is words) . ' />'.\n;
+                        //Connecting to sql db.
+                        $connect = mysqli_connect("my host","my user","admin","my db");
+                        //Sending form data to sql db.
+                        mysqli_query($connect,"INSERT INTO posts (category, title, contents, tags)
+                        VALUES ('$_POST[post_category]', '$_POST[post_title]', '$_POST[post_contents]', '$_POST[post_tags]')";
+                  	?>
+                   
+            	<input name="submit" type="button" value="Sumbit" vspace="20" onClick=
+					<?php
+                    	function runtest()
+                        //Connecting to sql db.
+                        $connect = mysqli_connect("my host","my user","admin","my db");
+                        //Sending form data to sql db.
+                        mysqli_query($connect,"INSERT INTO posts (category, title, contents, tags)
+                        VALUES ('$_POST[post_category]', '$_POST[post_title]', '$_POST[post_contents]', '$_POST[post_tags]')";
+                  	?>
+            </div>
+      </form></td>
+    <td width="10%"></td>
+  </tr>
+ 	
+</table>
+	</div>
+</div>
+<div id="copyright">
+	<p>&copy; We made this.</p>
+</div>
+</body>
+</html>
