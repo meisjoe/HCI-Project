@@ -5,6 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Database {
 
@@ -22,6 +27,8 @@ public class Database {
 	private User messageReceiver;
 	private boolean aUserIsConnected;
 	private int nbMessages;
+	private List<ObservableList<String>> listOfMessagesByUser;
+	private List<Integer> userIDAlreadyAddedToList;
 	
 	public Database() {
 		this.connectionURL = "";
@@ -281,6 +288,69 @@ public class Database {
 	
 	public int getNbMessages() {
 		return this.nbMessages;
+	}
+	
+	public void createMessageListByUser(User connectedUser) {
+		userIDAlreadyAddedToList = new ArrayList<Integer>();
+		listOfMessagesByUser = new ArrayList<ObservableList<String>>();
+		for (int i = 0; i < getNbMessages(); i++) {
+			if (getMessagesToDisplay()[i].getReceiverID() != getCurrentConnectedUser().getUserID()) {
+				//the Receiver ID is the contact of currentConnectedUser
+				if (!userIDAlreadyAddedToList.contains(getMessagesToDisplay()[i].getReceiverID())) {
+					//if receiver not yet in the list of observable list
+					userIDAlreadyAddedToList.add(getMessagesToDisplay()[i].getReceiverID());
+					listOfMessagesByUser.add(FXCollections.observableArrayList());
+//					System.out.println("User added:" + getMessagesToDisplay()[i].getReceiverID());
+				}
+				listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(getMessagesToDisplay()[i].getReceiverID())).add(getMessagesToDisplay()[i].messageContent);		
+			}
+			else {
+				//the Sender ID is the contact of currentConnectedUser
+				if (!userIDAlreadyAddedToList.contains(getMessagesToDisplay()[i].getSenderID())) {
+					//if receiver not yet in the list of observable list
+					userIDAlreadyAddedToList.add(getMessagesToDisplay()[i].getSenderID());
+					listOfMessagesByUser.add(FXCollections.observableArrayList());
+//					System.out.println("User added:" + getMessagesToDisplay()[i].getSenderID());
+				}
+				listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(getMessagesToDisplay()[i].getSenderID())).add(getMessagesToDisplay()[i].messageContent);		
+			}
+		}
+	}
+
+	public void updateMessageListByUser(User connectedUser) {
+		try {
+			int nbMessagesBeforeUpdate = this.getNbMessages();
+			this.updateMessages(connectedUser);
+			if (nbMessagesBeforeUpdate != this.getNbMessages()) {
+				for (int i = nbMessagesBeforeUpdate; i < this.getNbMessages(); i++) {
+					if (getMessagesToDisplay()[i].getReceiverID() != getCurrentConnectedUser().getUserID()) {
+						//the Receiver ID is the contact of currentConnectedUser
+						if (!userIDAlreadyAddedToList.contains(getMessagesToDisplay()[i].getReceiverID())) {
+							//if receiver not yet in the list of observable list
+							userIDAlreadyAddedToList.add(getMessagesToDisplay()[i].getReceiverID());
+							listOfMessagesByUser.add(FXCollections.observableArrayList());
+						}
+						listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(getMessagesToDisplay()[i].getReceiverID())).add(getMessagesToDisplay()[i].messageContent);		
+					}
+					else {
+						//the Sender ID is the contact of currentConnectedUser
+						if (!userIDAlreadyAddedToList.contains(getMessagesToDisplay()[i].getSenderID())) {
+							//if receiver not yet in the list of observable list
+							userIDAlreadyAddedToList.add(getMessagesToDisplay()[i].getSenderID());
+							listOfMessagesByUser.add(FXCollections.observableArrayList());
+						}
+						listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(getMessagesToDisplay()[i].getSenderID())).add(getMessagesToDisplay()[i].messageContent);		
+					}
+				}
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public ObservableList<String> getMessageObservableListFromUser(int userID) {
+		return listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(userID));
 	}
 	
 }

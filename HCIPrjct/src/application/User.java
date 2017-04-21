@@ -71,5 +71,5 @@ public class User {
 	public String getContactString() {
 		return this.contactString;
 	}
-	
+
 }
