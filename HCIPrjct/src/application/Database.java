@@ -163,7 +163,7 @@ public class Database {
 		//Connection con = this.connectToDB();
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("INSERT INTO LoggedInUsers (UserID) VALUES ('" + user.getUserID() + "');");
-	}
+	} 
 	
 	public Message sendMessage(User sender, User receiver, String messageContent, String time) throws ClassNotFoundException, SQLException {
 		//Connection con = this.connectToDB();

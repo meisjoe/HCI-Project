@@ -91,7 +91,6 @@ public class Main extends Application {
 			topbox.getStyleClass().add("topbx"); 
 
 			bot.setPrefWidth(primaryStage.getWidth());
-			//bot.setPrefWidth(scene.getWidth());
 			
 			Label log = new Label("");
 			log.setStyle("-fx-background-image: url('logo.png');"+"\n"+"-fx-background-size:"+scene.getWidth()/2+";"+"\n"+"-fx-background-repeat: no-repeat;"+"\n"+"-fx-background-position: 0%;");

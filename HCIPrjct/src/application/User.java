@@ -6,7 +6,7 @@ public class User {
 	protected String password;
 	protected int userID;
 	protected String contactString;
-	protected User[] contactList;
+	protected User[] contactList; 
 	
 	public User() {
 		this.username = "";
