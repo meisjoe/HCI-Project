@@ -7,14 +7,12 @@ public class User {
 	protected int userID;
 	protected String contactString;
 	protected User[] contactList;
-	//protected int roomID;
 	
 	public User() {
 		this.username = "";
 		this.password = "";
 		this.contactString = "";
 		this.userID = -1;
-		//this.roomID = -1;
 	}
 	
 	public User(String username, String password) {
@@ -22,7 +20,6 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.contactString = "";
-		//this.roomID = -1
 	}
 	
 	public User(int userID, String username, String password) {
@@ -30,7 +27,6 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.contactString = "";
-		//this.roomID = -1;
 	}
 	
 	public User(int userID, String username, String password, String contactString) {

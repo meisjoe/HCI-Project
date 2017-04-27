@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -47,14 +48,15 @@ public class Main extends Application {
 		return s;
 	}
 	
-	public void updateContactUsernames(Database chatDB, ListView<String> list, Button buttonClicked){
+	public void updateContactUsernames(Database chatDB, ListView<String> list, Button buttonClicked) {
 		String usernames[] = new String[chatDB.getUserContactList().length];
 		for(int j = 0; j < chatDB.getUserContactList().length; j++) {
 			usernames[j] = (chatDB.getUserContactList()[j]).getUsername();
-			if(chatDB.getUserContactList()[j].getUsername().equals(chatDB.getCurrentConnectedUser().getUsername())){
+			if(chatDB.getUserContactList()[j].getUsername().equals(chatDB.getCurrentConnectedUser().getUsername())) {
 				usernames[j] = usernames[j] + " (MYSELF)";
 			}
 		}
+		list.getItems().clear();
 		ObservableList<String> friendlist = FXCollections.observableArrayList (usernames);
 		list.setItems(friendlist);
 		if (list.getItems().size() <= 1) {
@@ -186,6 +188,12 @@ public class Main extends Application {
 			logout.setStyle("-fx-background-image: url('logoutsymb.png');"+"\n"+"-fx-background-size:"+3*primaryStage.getWidth()/64+" "+ primaryStage.getHeight()/16+";\n"+"-fx-background-repeat: no-repeat;"+"\n"+"-fx-background-position: 50%;");
 			logout.getStyleClass().add("signbutton");
 
+			final Tooltip logoutTooltip = new Tooltip();
+			logoutTooltip.setText(
+			    "Log Out"
+			);
+			logout.setTooltip(logoutTooltip);
+			
 			ListView<String> list = new ListView<>();
 			list.getStyleClass().add("contlist"); 
 			list.setPrefWidth(primaryStage.getWidth()/4);
@@ -206,12 +214,24 @@ public class Main extends Application {
 			addcontact.setMinHeight(primaryStage.getHeight()/8);
 			addcontact.getStyleClass().add("signbutton"); 
 
-			Button removecontact=new Button("");
+			final Tooltip addContactTooltip = new Tooltip();
+			addContactTooltip.setText(
+			    "Add a contact"
+			);
+			addcontact.setTooltip(addContactTooltip);
+			
+			Button removecontact = new Button("");
 			removecontact.setStyle("-fx-background-image: url('remcontactsymb.png');"+"\n"+"-fx-background-size:"+primaryStage.getWidth()/16+" "+ primaryStage.getHeight()/16+";\n"+"-fx-background-repeat: no-repeat;"+"-fx-background-position: 50%;");
 			removecontact.setPrefWidth(primaryStage.getWidth()/8);
 			removecontact.setMinHeight(primaryStage.getHeight()/8);
 			removecontact.getStyleClass().add("signbutton"); 
 
+			final Tooltip removeContactTooltip = new Tooltip();
+			removeContactTooltip.setText(
+			    "Remove a contact"
+			);
+			removecontact.setTooltip(removeContactTooltip);
+			
 			TextField typingmessage = new TextField("Type your message here");
 			typingmessage.setPrefWidth(3*primaryStage.getWidth()/4*6/7);
 			typingmessage.setMinHeight(primaryStage.getHeight()/8);
@@ -223,6 +243,12 @@ public class Main extends Application {
 			sendbutton.setStyle("-fx-background-image: url('sendsymb.png');"+"\n"+"-fx-background-size:"+3*primaryStage.getWidth()/64+" "+ primaryStage.getHeight()/16+";\n"+"-fx-background-repeat: no-repeat;"+"\n"+"-fx-background-position: 50%;");
 			sendbutton.getStyleClass().add("signbutton"); 
 
+			final Tooltip sendMessageTooltip = new Tooltip();
+			sendMessageTooltip.setText(
+			    "Send a message"
+			);
+			sendbutton.setTooltip(sendMessageTooltip);
+			
 			top.getChildren().addAll(welcomelogo, gaptop, logout);	
 			middle.getChildren().addAll(list, displaymessages);
 			bottom.getChildren().addAll(addcontact, removecontact, typingmessage, sendbutton);
@@ -297,7 +323,7 @@ public class Main extends Application {
 			    	Platform.runLater(new Runnable() {
 			    		public void run() {
 					    	try {
-								chatDB.getUserByID(1);
+								chatDB.getUserByID(0);
 								if (chatDB.getIfUserIsConnected()) {
 									System.out.println("CURRENTLY UPDATING MESSAGES...");
 									int nbMessagesBeforeUpdate = chatDB.getNbMessages();
@@ -332,6 +358,7 @@ public class Main extends Application {
 										}
 										if (chatDB.getMessageReceiver() != null) {
 											if (chatDB.getMessageObservableListFromUser(friendid) != null) {
+												displaymessages.setVisible(true);
 							        			displaymessages.setItems(chatDB.getMessageObservableListFromUser(friendid));
 							        		}
 											System.out.println("UPDATINGLIST, NEW MESSAGES");
@@ -482,7 +509,7 @@ public class Main extends Application {
 			logout.setOnMouseClicked((e)-> {
 				timer.cancel();
 				list.getSelectionModel().clearSelection();
-				chatDB.getMessageObservableListFromUser(chatDB.getCurrentConnectedUser().getUserID()).clear();
+				//chatDB.getMessageObservableListFromUser(chatDB.getCurrentConnectedUser().getUserID()).clear();
 				chatDB.setUserIsConnected(false);
 				usernamesignin.clear();
 				pwdsignin.clear();
@@ -491,6 +518,7 @@ public class Main extends Application {
 				primaryStage.setScene(scene);
 				errsignup.setText("");
 				incorrectpwd.setVisible(false);
+				primaryStage.setTitle("mymessenger");
 				chatDB.setMessageReceiver(null);
 				topbox.setPrefWidth(primaryStage.getWidth());
     	        bot.setPrefWidth(primaryStage.getWidth());
@@ -630,6 +658,10 @@ public class Main extends Application {
 						.toString();
 					chatDB.sendMessage(chatDB.getCurrentConnectedUser(), chatDB.getMessageReceiver(), messageToString.toString(), time);
 					chatDB.updateMessageListByUser(chatDB.getCurrentConnectedUser());
+					if(!displaymessages.isVisible()){
+						displaymessages.setItems(chatDB.getMessageObservableListFromUser(friendid));
+						displaymessages.setVisible(true);
+					}
 					displaymessages.scrollTo(displaymessages.getItems().size()-1);
 				} catch (ClassNotFoundException | SQLException e1) {
 					e1.printStackTrace();
@@ -643,7 +675,7 @@ public class Main extends Application {
 				    	Platform.runLater(new Runnable() {
 				    		public void run() {
 						    	try {
-									chatDB.getUserByID(1);
+									chatDB.getUserByID(0);
 									if (chatDB.getIfUserIsConnected()) {
 										System.out.println("CURRENTLY UPDATING MESSAGES...");
 										int nbMessagesBeforeUpdate = chatDB.getNbMessages();
@@ -678,6 +710,7 @@ public class Main extends Application {
 											}
 											if (chatDB.getMessageReceiver() != null) {
 												if (chatDB.getMessageObservableListFromUser(friendid) != null) {
+													displaymessages.setVisible(true);
 								        			displaymessages.setItems(chatDB.getMessageObservableListFromUser(friendid));
 								        		}
 												System.out.println("UPDATINGLIST, NEW MESSAGES");
@@ -699,7 +732,7 @@ public class Main extends Application {
 			    @Override
 			    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 					timer.cancel();
-			    	messdisp.clear();
+					//messdisp.clear();
 			        int currentid = -1;
 			        int j = 0;
 			        
@@ -719,9 +752,13 @@ public class Main extends Application {
 			        		chatDB.setMessageReceiver(chatDB.getUserByID(friendid));
 			        		chatDB.setUserIsConnected(true);
 			        		chatDB.updateMessages(chatDB.getCurrentConnectedUser());
-			        		if (chatDB.getNbMessages() != 0) {
+			        		if (chatDB.getUsersWithMessage().contains(friendid)) {
+			        			displaymessages.setVisible(true);
 			        			displaymessages.setItems(chatDB.getMessageObservableListFromUser(friendid));
 			        			displaymessages.scrollTo(displaymessages.getItems().size()-1);
+			        		}
+			        		else {
+								displaymessages.setVisible(false);
 			        		}
 			        		if (list.getSelectionModel().getSelectedIndex() != -1) {
 			        			list.getItems().set(list.getSelectionModel().getSelectedIndex(), list.getItems().get(list.getSelectionModel().getSelectedIndex()).replaceAll(" " + "\\(NEW MESSAGE\\)", ""));
@@ -738,7 +775,7 @@ public class Main extends Application {
 						    	Platform.runLater(new Runnable() {
 						    		public void run() {
 								    	try {
-											chatDB.getUserByID(1);
+											chatDB.getUserByID(0);
 											if (chatDB.getIfUserIsConnected()) {
 												System.out.println("CURRENTLY UPDATING MESSAGES...");
 												int nbMessagesBeforeUpdate = chatDB.getNbMessages();
@@ -773,6 +810,7 @@ public class Main extends Application {
 													}
 													if (chatDB.getMessageReceiver() != null) {
 														if (chatDB.getMessageObservableListFromUser(friendid) != null) {
+															displaymessages.setVisible(true);
 										        			displaymessages.setItems(chatDB.getMessageObservableListFromUser(friendid));
 										        		}
 														System.out.println("UPDATINGLIST, NEW MESSAGES");

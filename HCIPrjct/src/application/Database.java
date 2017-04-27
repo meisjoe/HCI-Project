@@ -10,6 +10,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 
 public class Database {
 
@@ -166,6 +167,7 @@ public class Database {
 	
 	public Message sendMessage(User sender, User receiver, String messageContent, String time) throws ClassNotFoundException, SQLException {
 		//Connection con = this.connectToDB();
+		messageContent = messageContent.replaceAll("'","''");
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("INSERT INTO Message (UserID, toUserID, MessageContent, Time) VALUES ('" + sender.getUserID() + "', '" + receiver.getUserID() + "', '" + messageContent + "', '" + time + "');");
 		ResultSet rs = stmt.executeQuery("SELECT MessageID FROM Message WHERE MessageContent = '" + messageContent + "'");
@@ -351,6 +353,10 @@ public class Database {
 	
 	public ObservableList<String> getMessageObservableListFromUser(int userID) {
 		return listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(userID));
+	}
+	
+	public List<Integer> getUsersWithMessage() {
+		return userIDAlreadyAddedToList;
 	}
 	
 }
