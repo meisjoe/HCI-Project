@@ -1,0 +1,74 @@
+.view {
+	.root {
+    -fx-font: 20px "Arial";
+}
+
+.style1 {
+	-fx-background-color: #34b07e;
+    -fx-padding: 50;
+    -fx-spacing: 20;
+    -fx-border-color: white;
+    -fx-border-width: 3;
+}
+
+.style2 {
+    -fx-spacing: 50;
+    -fx-fill: white;
+}
+
+.signbutton {
+	-fx-background-color: #9de1c6;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-padding: 10 20 10 20;
+}
+
+
+.signbutton:hover {
+   	-fx-background-color: #cdffe6;
+}
+
+.contlist{
+	-fx-background-color: #9de1c6;
+}
+
+.messlist{
+	-fx-font: 16px "Arial";
+}
+
+.txtaddrem {
+	-fx-background-color: #34b07e;
+	-fx-font: 16px "Arial";
+	-fx-fill: white;
+}
+
+.signtitle{
+	-fx-background-color: #34b07e;
+	-fx-font: 20px "Arial";
+	-fx-font-weight: bold;
+	-fx-fill: #144330;
+}
+
+.incorrtext{
+	-fx-background-color: #34b07e;
+	-fx-font: 14px "Arial";
+	-fx-font-weight: bold;
+	-fx-fill: #144330;
+}
+
+.topbx{
+	-fx-background-color: #ffffff;
+}
+
+.popup{
+	-fx-font: 20px "Arial";
+	-fx-font-weight: bold;
+	-fx-fill: #144330;
+}
+
+.backgreen{
+	-fx-background-color: #34b07e;
+}
+}
