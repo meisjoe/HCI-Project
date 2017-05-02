@@ -18,7 +18,7 @@ public class Room {
 	public Room(int ID, String name) {
 		roomID = ID;
 		roomName = name;
-	}
+	} 
 	
 	public void setRoomname(String name){
 		this.roomName = name;

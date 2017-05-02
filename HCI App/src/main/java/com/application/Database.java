@@ -29,6 +29,7 @@ public class Database {
 	private int nbMessages;
 	private List<ObservableList<String>> listOfMessagesByUser;
 	private List<Integer> userIDAlreadyAddedToList;
+	private int friendID;
 	
 	public Database() {
 		this.connectionURL = "";
@@ -37,6 +38,7 @@ public class Database {
 		this.nbOfUsers = 0;
 		this.aUserIsConnected = false;
 		this.nbMessages = 0;
+		this.friendID = -1;
 	}
 	
 	public Database(String connectionURL, String username, String password) {
@@ -46,6 +48,7 @@ public class Database {
 		this.nbOfUsers = 0;
 		this.aUserIsConnected = false;
 		this.nbMessages = 0;
+		this.friendID = -1;
 	}
 	
 	public Connection connectToDB() throws SQLException, ClassNotFoundException {
@@ -162,10 +165,11 @@ public class Database {
 		//Connection con = this.connectToDB();
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("INSERT INTO LoggedInUsers (UserID) VALUES ('" + user.getUserID() + "');");
-	}
+	} 
 	
 	public Message sendMessage(User sender, User receiver, String messageContent, String time) throws ClassNotFoundException, SQLException {
 		//Connection con = this.connectToDB();
+		messageContent = messageContent.replaceAll("'","''");
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate("INSERT INTO Message (UserID, toUserID, MessageContent, Time) VALUES ('" + sender.getUserID() + "', '" + receiver.getUserID() + "', '" + messageContent + "', '" + time + "');");
 		ResultSet rs = stmt.executeQuery("SELECT MessageID FROM Message WHERE MessageContent = '" + messageContent + "'");
@@ -344,13 +348,24 @@ public class Database {
 				}
 			}
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	public ObservableList<String> getMessageObservableListFromUser(int userID) {
 		return listOfMessagesByUser.get(userIDAlreadyAddedToList.indexOf(userID));
+	}
+	
+	public List<Integer> getUsersWithMessage() {
+		return userIDAlreadyAddedToList;
+	}
+
+	public int getFriendID() {
+		return friendID;
+	}
+	
+	public void setFriendID(int friendID) {
+		this.friendID = friendID;
 	}
 	
 }

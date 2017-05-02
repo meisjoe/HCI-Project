@@ -54,7 +54,7 @@ public class Message {
 	
 	public int getSenderID(){
 		return this.senderID;
-	}
+	} 
 	
 	public int getReceiverID(){
 		return this.receiverID;

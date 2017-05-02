@@ -1,6 +1,7 @@
 package com.application;
 
 import com.application.views.Login;
+import com.application.views.AddContact;
 import com.application.views.Chat;
 import com.application.views.Contacts;
 import com.gluonhq.charm.glisten.application.MobileApplication;
@@ -16,16 +17,18 @@ public class Main extends MobileApplication {
     public static final String Chat_VIEW = "Chat";
     public static final String Contacts_VIEW = "Contacts";
     public static final String MENU_LAYER = "Side Menu";
+    public static final String ADDContact_VIEW = "Add Contact";
     
     @Override
     public void init() {
         addViewFactory(Login_VIEW, () -> new Login(Login_VIEW));
         addViewFactory(Contacts_VIEW, () -> new Contacts(Contacts_VIEW));
+        addViewFactory(ADDContact_VIEW, () -> new AddContact(ADDContact_VIEW));
         addViewFactory(Chat_VIEW, () -> new Chat(Chat_VIEW));
         
         addLayerFactory(MENU_LAYER, () -> new SidePopupView(new DrawerManager().getDrawer()));
     }
-
+    
     @Override
     public void postInit(Scene scene) {
         Swatch.BLUE.assignTo(scene);

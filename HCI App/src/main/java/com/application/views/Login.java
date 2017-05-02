@@ -2,25 +2,16 @@ package com.application.views;
 
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
-import com.gluonhq.charm.glisten.control.NavigationDrawer;
 import com.gluonhq.charm.glisten.mvc.View;
-import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
-
-import com.mysql.jdbc.*;
-
 import java.sql.SQLException;
 
 import com.application.Database;
 import com.application.DrawerManager;
-import com.application.Main;
-import static com.application.Main.MENU_LAYER;
-import static com.application.Main.Login_VIEW;
-import static com.application.Main.Chat_VIEW;
 import static com.application.Main.Contacts_VIEW;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -36,9 +27,9 @@ public class Login extends View {
         getStylesheets().add(Login.class.getResource("primary.css").toExternalForm());
 
         Text userText = new Text("Username: ");
-        TextField usernamesignin = new TextField("Username");
+        TextField usernamesignin = new TextField();
         Text pwdText = new Text("Password: ");
-        TextField pwdsignin = new TextField("Password");
+        PasswordField pwdsignin = new PasswordField();
         Button signinbutton = new Button("Sign In");
         Button registerbutton = new Button("Register");
         
@@ -46,9 +37,11 @@ public class Login extends View {
         Text incorrectpwd = new Text ("The combination username/password is incorrect");
 		incorrectpwd.setVisible(false);
 		Text errregister = new Text();
-        
-		ListView<String> list = new ListView<>();
-		list.getStyleClass().add("contlist"); 
+		
+		this.setOnShown((e) -> {
+			usernamesignin.clear();
+			pwdsignin.clear();
+		});
 		
         signinbutton.setOnAction((e)-> {
 
@@ -63,12 +56,11 @@ public class Login extends View {
 				System.out.println("SQL Error");
 				e1.printStackTrace();
 			}
-
+			
 			boolean found = false;
 			int i = 0;
 			while(i != dbconnection.getUsersList().length){
-				System.out.println(dbconnection.getUsersList().length);
-				System.out.println(usernamesignin.getText().equals((dbconnection.getUsersList())[i].getUsername()));
+				//System.out.println(usernamesignin.getText().equals((dbconnection.getUsersList())[i].getUsername()));
 				if((usernamesignin.getText().equals((dbconnection.getUsersList())[i].getUsername())) && (pwdsignin.getText().equals((dbconnection.getUsersList())[i].getPassword()))) {
 					dbconnection.setCurrentConnectedUser((dbconnection.getUsersList())[i]);
 					found = true;
@@ -91,7 +83,6 @@ public class Login extends View {
 				} catch (ClassNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -159,7 +150,7 @@ public class Login extends View {
     @Override
     protected void updateAppBar(AppBar appBar) {
         //appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> MobileApplication.getInstance().showLayer(Main.MENU_LAYER)));
-        appBar.setTitleText("Messenger - Login");
+        appBar.setTitleText("BLAB - Login");
     }
     
 }
